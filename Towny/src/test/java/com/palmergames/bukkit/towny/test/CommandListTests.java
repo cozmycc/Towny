@@ -4,14 +4,15 @@ import com.palmergames.bukkit.towny.object.CommandList;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-@SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
 public class CommandListTests {
 	
 	@Test
 	void testSubCommands() {
-		CommandList list = new CommandList(Arrays.asList("/town spawn"));
+		CommandList list = new CommandList(List.of("/town spawn"));
 		
 		assertTrue(list.containsCommand("town spawn"));
 		assertTrue(list.containsCommand("/towny:town spawn"));
@@ -27,7 +28,7 @@ public class CommandListTests {
 	
 	@Test
 	void testSubSubCommands() {
-		CommandList list = new CommandList(Arrays.asList("/command subcommand1 subcommand2"));
+		CommandList list = new CommandList(List.of("/command subcommand1 subcommand2"));
 		
 		assertTrue(list.containsCommand("command subcommand1 subcommand2"));
 		
@@ -37,7 +38,7 @@ public class CommandListTests {
 	
 	@Test
 	void testNamespacedCommands() {
-		CommandList list = new CommandList(Arrays.asList("/towny"));
+		CommandList list = new CommandList(List.of("/towny"));
 		
 		assertTrue(list.containsCommand("/plugin1:towny"));
 		assertTrue(list.containsCommand("/plugin2:towny"));
@@ -46,12 +47,12 @@ public class CommandListTests {
 	
 	@Test
 	void testLeadingSlashes() {
-		CommandList list1 = new CommandList(Arrays.asList("/towny"));
+		CommandList list1 = new CommandList(List.of("/towny"));
 		
 		assertTrue(list1.containsCommand("towny"));
 		assertTrue(list1.containsCommand("/towny"));
 		
-		CommandList list2 = new CommandList(Arrays.asList("towny"));
+		CommandList list2 = new CommandList(List.of("towny"));
 		assertTrue(list2.containsCommand("towny"));
 		assertTrue(list2.containsCommand("/towny"));
 	}

@@ -34,12 +34,6 @@
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.github.bsideup.jabel</groupId>
-            <artifactId>jabel-javac-plugin</artifactId>
-            <version>1.0.0</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <build>

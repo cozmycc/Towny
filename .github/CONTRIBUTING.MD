@@ -26,7 +26,7 @@ If you do not agree with the terms of our license, do not contribute to the Town
 > Towny uses an [.editorconfig](https://editorconfig.org) file. IDEs that have [native EditorConfig support](https://editorconfig.org/#pre-installed) will automatically follow these rules.
     
 1. You must use tabs for indentation. 
-2. Keep your environment in Java 16-17. The code will automatically be converted into code compatible with Java 8 by [Jabel](https://github.com/bsideup/jabel).[^jabel-warning]
+2. Keep your environment in Java 17.
 3. Do not use wildcard imports.
 4. Do not make unnecessary changes.[^changes]
    - All IDEs are different, we do this to keep consistency in the codebase.
