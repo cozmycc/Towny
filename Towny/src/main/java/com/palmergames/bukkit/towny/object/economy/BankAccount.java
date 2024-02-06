@@ -1,5 +1,6 @@
 package com.palmergames.bukkit.towny.object.economy;
 
+import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownyEconomyHandler;
 import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.object.EconomyAccount;
@@ -18,18 +19,22 @@ import org.jetbrains.annotations.Nullable;
 public class BankAccount extends Account {
 	
 	private double debtCap;
-	private Government government;
+	private final Government government;
 
 	/**
 	 * Constructor for a {@link Government} BankAccount. Governments can be Towns or Nations.
 	 * 
 	 * @param name Name of the {@link EconomyAccount} that will be used, ie: town-townname.
-	 * @param world World that will be associated with this BankAccount.
 	 * @param government Town or Nation that is getting a BankAccount.
 	 */
-	public BankAccount(String name, World world, Government government) {
-		super(name, world);
+	public BankAccount(String name, Government government) {
+		super(name, government.getUUID(), () -> TownyAPI.getInstance().getTownyWorld(government.getWorld()));
 		this.government = government;
+	}
+	
+	@Deprecated
+	public BankAccount(String name, World world, Government government) {
+		this(name, government);
 	}
 
 	/**
@@ -53,7 +58,7 @@ public class BankAccount extends Account {
 
 			if (newDebt <= getDebtCap()) {
 				// Empty out account.
-				boolean success = TownyEconomyHandler.setBalance(getName(), 0, world);
+				boolean success = TownyEconomyHandler.setBalance(this, 0);
 				success &= addDebt(newDebt);
 
 				// Fire an event if the Town will be allowed to take on this new debt.
@@ -67,7 +72,7 @@ public class BankAccount extends Account {
 		}
 
 		// Otherwise continue like normal.
-		return TownyEconomyHandler.subtract(getName(), amount, world);
+		return TownyEconomyHandler.subtract(this, amount);
 	}
 
 	@Override
@@ -80,7 +85,7 @@ public class BankAccount extends Account {
 			return removeDebt(amount);
 
 		// Otherwise continue like normal.
-		return TownyEconomyHandler.add(getName(), amount, world);
+		return TownyEconomyHandler.add(this, amount);
 	}
 
 	@Override
@@ -93,7 +98,7 @@ public class BankAccount extends Account {
 
 	@Override
 	public synchronized double getHoldingBalance(boolean setCache) {
-		double balance = isBankrupt() ? balance = getTownDebt() * -1 : TownyEconomyHandler.getBalance(getName(), getBukkitWorld());
+		double balance = isBankrupt() ? getTownDebt() * -1 : TownyEconomyHandler.getBalance(this);
 		if (setCache)
 			this.cachedBalance.setBalance(balance);
 		return balance;
@@ -166,9 +171,9 @@ public class BankAccount extends Account {
 			// Sometimes there's money in the bank account 
 			// (from a player manually putting money in via
 			// eco plugin, maybe.)
-			double bankBalance = TownyEconomyHandler.getBalance(getName(), getBukkitWorld());
+			double bankBalance = getHoldingBalance();
 			//Set positive balance in regular account
-			TownyEconomyHandler.setBalance(getName(), bankBalance + netMoney, world);
+			TownyEconomyHandler.setBalance(this, bankBalance + netMoney);
 			return true;
 		} else {
 			setTownDebt(getTownDebt() - amount);
