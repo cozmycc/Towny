@@ -54,8 +54,6 @@ All translation on the core Towny plugin is done via [Crowdin](https://crowdin.c
 
 Strings are formatted using [Java's `java.util.Formatter`](https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/Formatter.html) allowing specification of variable order, and more. This means that if you find that a line has multiple variables which would be in a different order in your language, you can change them to `%NUMBER$s` (replacing `NUMBER` with the variable index) to change their order. 
 
-[^jabel-warning]: Keep in mind that, while you will be able to use modern language features that way (like patterns), some standard library methods added after JDK 8 will not work **even after being processed** and cause "Cannot find symbol" errors when building (like `String#isBlank`).
-
 [^changes]: This includes formatting and whitespace changes.
 
 [^nms]: The `net.minecraft.server` is the Minecraft server source package. While this allows for "lower-level" coding, it's also pretty hard to maintain due to its obfuscation, no cross-version compatibility, and possibility to corrupt data.
